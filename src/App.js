@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import Button from "./components/UI/Button/Button";
 import "./App.css";
 import DemoOutput from "./components/Demo/Demo";
+import DemoList from "./components/Demo/DemoList";
 
 function App() {
   const [showParagraph, setShowParagraph] = useState(false);
@@ -22,14 +23,32 @@ function App() {
   const allowToggleHandler = () => {
     setAllowToggle(true);
   };
+
+  // ----------------------------------------------
+  const [listTitle, setListTitle] = useState("My List");
+
+  // useCallback to store a function to not recreate it
+  const changeTitleHandler = useCallback(() => {
+    setListTitle("New Title");
+  }, []);
+
+  // to ensure that we do not unnecessary pass a new array to DemoList component
+  // hich makes it to be re-evaluated.
+  const listItems = useMemo(() => [5, 3, 1, 10, 9], []); // not sorted
   return (
     <div className="app">
-      <h1>Hi there!</h1>
-      {/* {showParagraph && <p>This is new!</p>} */}
-      <DemoOutput show={showParagraph} />
-      {/* <DemoOutput show={false} /> */}
-      <Button onClick={allowToggleHandler}>Allow Toggling</Button>
-      <Button onClick={toggleParagraphHandler}>Toggle Paragraph!</Button>
+      <>
+        <h1>Hi there!</h1>
+        {/* {showParagraph && <p>This is new!</p>} */}
+        <DemoOutput show={showParagraph} />
+        {/* <DemoOutput show={false} /> */}
+        <Button onClick={allowToggleHandler}>Allow Toggling</Button>
+        <Button onClick={toggleParagraphHandler}>Toggle Paragraph!</Button>
+      </>
+      <>
+        <DemoList title={listTitle} items={listItems} />
+        <Button onClick={changeTitleHandler}>Change List Title</Button>
+      </>
     </div>
   );
 }
