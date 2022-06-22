@@ -7,7 +7,7 @@ const DemoList = (props) => {
 
   // sorting logic is performance intensive
   // we dont want to run this code everytime this entire component is re-evaluated.
-  // we memoize the rsult of the sorting.
+  // we memoize the result of the sorting.
   //  const sortedList = items.sort((a, b) => a - b);
   const sortedList = useMemo(() => {
     console.log("Items sorted");

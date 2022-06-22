@@ -14,6 +14,10 @@ function App() {
   //   setShowParagraph((prevParagraphState) => !prevParagraphState);
   // };
 
+  // const toggleParagraphHandler = useCallback(() => {
+  //     setShowParagraph((prevShowParagraph) => !prevShowParagraph);
+  // }, []);
+
   const toggleParagraphHandler = useCallback(() => {
     if (allowToggle) {
       setShowParagraph((prevShowParagraph) => !prevShowParagraph);
@@ -25,6 +29,8 @@ function App() {
   };
 
   // ----------------------------------------------
+  // -------useMemo() Hook----------------------
+  // ----------------------------------------------
   const [listTitle, setListTitle] = useState("My List");
 
   // useCallback to store a function to not recreate it
@@ -33,7 +39,7 @@ function App() {
   }, []);
 
   // to ensure that we do not unnecessary pass a new array to DemoList component
-  // hich makes it to be re-evaluated.
+  // which makes it to be re-evaluated.
   const listItems = useMemo(() => [5, 3, 1, 10, 9], []); // not sorted
   return (
     <div className="app">
@@ -45,9 +51,11 @@ function App() {
         <Button onClick={allowToggleHandler}>Allow Toggling</Button>
         <Button onClick={toggleParagraphHandler}>Toggle Paragraph!</Button>
       </>
+      {/* Example forfor useMemo hook */}
       <>
         <DemoList title={listTitle} items={listItems} />
         <Button onClick={changeTitleHandler}>Change List Title</Button>
+        {/* Butotn internally uses React.memo() and because we use the function stored with useCallback, the Button will not re-render in this case */}
       </>
     </div>
   );
